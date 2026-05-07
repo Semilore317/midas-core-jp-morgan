@@ -20,6 +20,8 @@ public class TransactionRecord {
     @Column(nullable = false)
     private float amount;
 
+    private float incentive;
+
     protected TransactionRecord() {
     }
 
@@ -64,5 +66,13 @@ public class TransactionRecord {
     @Override
     public String toString() {
         return "TransactionRecord{id=" + id + ", sender=" + sender + ", recipient=" + recipient + ", amount=" + amount + "}";
+    }
+
+    public float getIncentive() {
+        return incentive;
+    }
+
+    public void setIncentive(float incentive) {
+        this.incentive = incentive;
     }
 }
