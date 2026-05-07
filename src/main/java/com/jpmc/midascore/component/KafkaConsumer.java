@@ -1,5 +1,6 @@
 package com.jpmc.midascore.component;
 
+import com.jpmc.midascore.entity.TransactionRecord;
 import com.jpmc.midascore.entity.UserRecord;
 import com.jpmc.midascore.foundation.Transaction;
 import com.jpmc.midascore.repository.UserRepository;
@@ -25,12 +26,17 @@ public class KafkaConsumer {
         logger.info("received: " + transaction);
         UserRecord sender = userRepository.findById(transaction.getSenderId());
         UserRecord recipient = userRepository.findById(transaction.getRecipientId());
+        TransactionRecord transactionRecord = new TransactionRecord(sender, recipient, transaction.getAmount());
 
         if (sender != null && recipient != null && sender.getBalance() >= transaction.getAmount()) {
             sender.setBalance(sender.getBalance() - transaction.getAmount());
             recipient.setBalance(recipient.getBalance() + transaction.getAmount());
+            transactionRecord.setAmount(transaction.getAmount());
+            transactionRecord.setRecipient(recipient);
+            transactionRecord.setSender(sender);
             databaseConduit.save(sender);
             databaseConduit.save(recipient);
+            databaseConduit.save(transactionRecord);
         }
     }
 }
