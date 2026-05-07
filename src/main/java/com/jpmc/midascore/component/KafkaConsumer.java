@@ -42,9 +42,9 @@ public class KafkaConsumer {
             }else{
                 incentiveAmount = 0;
             }
-            
+
             sender.setBalance(sender.getBalance() - transaction.getAmount());
-            recipient.setBalance(recipient.getBalance() + transaction.getAmount());
+            recipient.setBalance(recipient.getBalance() + transaction.getAmount() + incentiveAmount);
 
             transactionRecord.setAmount(transaction.getAmount());
             transactionRecord.setRecipient(recipient);
